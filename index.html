@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AURA — Unisex Salon</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,600;1,9..144,400&family=Work+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --charcoal:#1b1b1b;
+    --charcoal-soft:#242320;
+    --ivory:#f7f3ec;
+    --brass:#b08d57;
+    --rose:#c97b84;
+    --text-on-dark:#ece7de;
+    --line:rgba(236,231,222,0.16);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--charcoal);
+    color:var(--text-on-dark);
+    font-family:'Work Sans',sans-serif;
+    font-weight:300;
+    overflow-x:hidden;
+  }
+  h1,h2,h3,.serif{font-family:'Fraunces',serif;}
+  .mono{font-family:'IBM Plex Mono',monospace;}
+  a{color:inherit;text-decoration:none;}
+  img{max-width:100%;display:block;}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 32px;}
+  ::selection{background:var(--brass);color:var(--charcoal);}
+
+  @media (prefers-reduced-motion: no-preference){
+    .reveal{opacity:0;transform:translateY(24px);transition:opacity .8s ease,transform .8s ease;}
+    .reveal.in{opacity:1;transform:translateY(0);}
+  }
+
+  /* NAV */
+  header{
+    position:fixed;top:0;left:0;right:0;z-index:100;
+    display:flex;align-items:center;justify-content:space-between;
+    padding:22px 32px;
+    background:linear-gradient(to bottom, rgba(27,27,27,0.9), transparent);
+  }
+  .logo{font-family:'Fraunces',serif;font-size:22px;letter-spacing:0.08em;font-weight:500;}
+  .logo em{font-style:italic;color:var(--brass);}
+  nav{display:flex;gap:34px;align-items:center;}
+  nav a{font-size:13px;letter-spacing:0.08em;text-transform:uppercase;opacity:0.85;transition:opacity .2s;}
+  nav a:hover{opacity:1;color:var(--brass);}
+  .nav-cta{
+    border:1px solid var(--brass);padding:9px 18px;border-radius:2px;
+    font-size:12px;letter-spacing:0.1em;text-transform:uppercase;
+  }
+  .nav-cta:hover{background:var(--brass);color:var(--charcoal);}
+  .burger{display:none;font-size:22px;background:none;border:none;color:var(--text-on-dark);cursor:pointer;}
+
+  /* HERO */
+  .hero{
+    min-height:100svh;display:flex;flex-direction:column;justify-content:center;
+    position:relative;padding:120px 32px 60px;
+    background:
+      radial-gradient(ellipse 60% 50% at 80% 20%, rgba(176,141,87,0.18), transparent 60%),
+      radial-gradient(ellipse 50% 40% at 10% 80%, rgba(201,123,132,0.14), transparent 60%);
+  }
+  .hero-eyebrow{
+    font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.22em;
+    text-transform:uppercase;color:var(--brass);margin-bottom:26px;
+    display:flex;align-items:center;gap:14px;
+  }
+  .hero-eyebrow::before{content:'';width:34px;height:1px;background:var(--brass);}
+  .hero h1{
+    font-size:clamp(48px,9vw,124px);line-height:0.94;font-weight:500;
+    max-width:980px;letter-spacing:-0.01em;
+  }
+  .hero h1 .it{font-style:italic;font-weight:300;color:var(--rose);}
+  .hero-sub{
+    max-width:460px;margin-top:34px;font-size:17px;line-height:1.7;color:rgba(236,231,222,0.75);
+  }
+  .hero-row{display:flex;gap:18px;margin-top:44px;flex-wrap:wrap;align-items:center;}
+  .btn-primary{
+    background:var(--brass);color:var(--charcoal);padding:16px 30px;font-size:13px;
+    letter-spacing:0.1em;text-transform:uppercase;font-weight:500;border-radius:2px;
+    transition:transform .25s ease, background .25s ease;display:inline-block;
+  }
+  .btn-primary:hover{transform:translateY(-2px);background:#c49d68;}
+  .btn-ghost{
+    padding:16px 4px;font-size:13px;letter-spacing:0.1em;text-transform:uppercase;
+    border-bottom:1px solid var(--line);display:inline-flex;align-items:center;gap:10px;
+  }
+  .btn-ghost:hover{border-color:var(--brass);color:var(--brass);}
+
+  /* MARQUEE */
+  .marquee-strip{
+    border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+    padding:16px 0;overflow:hidden;white-space:nowrap;background:var(--charcoal-soft);
+  }
+  .marquee-track{display:inline-block;animation:scroll 32s linear infinite;}
+  .marquee-track span{
+    font-family:'Fraunces',serif;font-style:italic;font-size:20px;
+    margin:0 34px;color:rgba(236,231,222,0.55);
+  }
+  .marquee-track span::after{content:'—';margin-left:34px;color:var(--brass);font-style:normal;}
+  @keyframes scroll{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+
+  /* SECTION HEADS */
+  .section{padding:120px 0;}
+  .section-head{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;margin-bottom:64px;flex-wrap:wrap;}
+  .section-eyebrow{font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.18em;text-transform:uppercase;color:var(--brass);margin-bottom:14px;}
+  .section-head h2{font-size:clamp(32px,4.5vw,54px);font-weight:500;max-width:600px;line-height:1.05;}
+  .section-head p{max-width:340px;color:rgba(236,231,222,0.6);font-size:15px;line-height:1.7;}
+
+  /* SERVICES MENU */
+  .menu-cols{display:grid;grid-template-columns:1fr 1fr;gap:60px;}
+  .menu-group h3{
+    font-size:13px;letter-spacing:0.14em;text-transform:uppercase;color:var(--rose);
+    margin-bottom:22px;font-family:'IBM Plex Mono',monospace;font-weight:400;
+  }
+  .menu-item{
+    display:flex;align-items:baseline;gap:10px;padding:16px 0;
+    border-bottom:1px solid var(--line);
+  }
+  .menu-item:hover .m-name{color:var(--brass);}
+  .m-name{font-family:'Fraunces',serif;font-size:19px;font-weight:400;transition:color .2s;}
+  .m-leader{flex:1;border-bottom:1px dotted rgba(236,231,222,0.3);transform:translateY(-5px);}
+  .m-price{font-family:'IBM Plex Mono',monospace;font-size:15px;color:var(--text-on-dark);white-space:nowrap;}
+  .m-sub{display:block;font-size:12.5px;color:rgba(236,231,222,0.5);margin-top:4px;font-family:'Work Sans',sans-serif;}
+
+  /* GALLERY */
+  .gallery-grid{
+    display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:190px;gap:14px;
+  }
+  .g-item{
+    border-radius:3px;overflow:hidden;position:relative;
+    background:linear-gradient(135deg, var(--charcoal-soft), #2c2a26);
+    display:flex;align-items:center;justify-content:center;
+    border:1px solid var(--line);
+  }
+  .g-item span{font-family:'Fraunces',serif;font-style:italic;color:rgba(236,231,222,0.35);font-size:15px;}
+  .g-item:nth-child(1){grid-column:span 2;grid-row:span 2;}
+  .g-item:nth-child(4){grid-row:span 2;}
+  .g-item:hover{border-color:var(--brass);}
+
+  /* STYLISTS */
+  .stylist-row{display:grid;grid-template-columns:repeat(4,1fr);gap:28px;}
+  .stylist{border-top:1px solid var(--line);padding-top:22px;}
+  .stylist-photo{
+    aspect-ratio:3/4;border-radius:3px;margin-bottom:18px;
+    background:linear-gradient(160deg,#2c2a26,#1b1b1b);
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Fraunces',serif;font-style:italic;color:rgba(236,231,222,0.3);
+    border:1px solid var(--line);
+  }
+  .stylist h4{font-size:19px;font-weight:500;margin-bottom:4px;}
+  .stylist p{font-size:12.5px;color:var(--brass);letter-spacing:0.06em;text-transform:uppercase;font-family:'IBM Plex Mono',monospace;}
+
+  /* TESTIMONIALS */
+  .testi-strip{background:var(--ivory);color:var(--charcoal);}
+  .testi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:36px;}
+  .testi-card blockquote{
+    font-family:'Fraunces',serif;font-size:20px;line-height:1.5;font-weight:400;margin-bottom:20px;
+  }
+  .testi-card cite{font-family:'IBM Plex Mono',monospace;font-size:12px;font-style:normal;letter-spacing:0.06em;opacity:0.6;}
+
+  /* BOOKING TICKET */
+  .booking{position:relative;}
+  .ticket{
+    display:grid;grid-template-columns:1.3fr 1fr;
+    background:var(--ivory);color:var(--charcoal);border-radius:6px;overflow:hidden;
+    box-shadow:0 40px 80px rgba(0,0,0,0.35);
+  }
+  .ticket-form{padding:56px;}
+  .ticket-form h3{font-size:30px;margin-bottom:8px;}
+  .ticket-form>p{color:rgba(27,27,27,0.6);font-size:14px;margin-bottom:34px;}
+  .field-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;}
+  .field{display:flex;flex-direction:column;gap:6px;}
+  .field label{font-size:11px;letter-spacing:0.1em;text-transform:uppercase;font-family:'IBM Plex Mono',monospace;opacity:0.6;}
+  .field input,.field select{
+    border:none;border-bottom:1.5px solid rgba(27,27,27,0.25);background:transparent;
+    padding:10px 2px;font-family:'Work Sans',sans-serif;font-size:15px;color:var(--charcoal);
+  }
+  .field input:focus,.field select:focus{outline:none;border-color:var(--brass);}
+  .ticket-submit{
+    margin-top:26px;width:100%;background:var(--charcoal);color:var(--ivory);
+    padding:16px;border:none;border-radius:2px;font-size:13px;letter-spacing:0.1em;
+    text-transform:uppercase;cursor:pointer;transition:background .2s;font-family:'Work Sans',sans-serif;
+  }
+  .ticket-submit:hover{background:var(--brass);color:var(--charcoal);}
+  .ticket-stub{
+    background:var(--charcoal);color:var(--ivory);padding:56px 40px;
+    position:relative;display:flex;flex-direction:column;justify-content:space-between;
+  }
+  .ticket-stub::before{
+    content:'';position:absolute;left:-14px;top:0;bottom:0;width:28px;
+    background-image:radial-gradient(circle, var(--charcoal-soft) 7px, transparent 7.5px);
+    background-size:28px 28px;background-repeat:repeat-y;
+    background-position:center;
+  }
+  .stub-top .mono{font-size:12px;letter-spacing:0.12em;color:var(--brass);text-transform:uppercase;margin-bottom:10px;}
+  .stub-top h4{font-family:'Fraunces',serif;font-style:italic;font-size:26px;font-weight:400;line-height:1.3;}
+  .stub-list{list-style:none;margin-top:30px;}
+  .stub-list li{
+    display:flex;justify-content:space-between;font-size:13px;padding:10px 0;
+    border-bottom:1px dashed rgba(236,231,222,0.2);
+  }
+  .stub-list li span:last-child{font-family:'IBM Plex Mono',monospace;color:var(--brass);}
+  .stub-bottom{font-size:12px;color:rgba(236,231,222,0.5);margin-top:24px;line-height:1.6;}
+
+  /* FOOTER */
+  footer{padding:80px 0 40px;border-top:1px solid var(--line);}
+  .foot-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:40px;margin-bottom:60px;}
+  .foot-logo{font-family:'Fraunces',serif;font-size:26px;margin-bottom:16px;}
+  .foot-logo em{font-style:italic;color:var(--brass);}
+  footer p{font-size:14px;color:rgba(236,231,222,0.55);line-height:1.7;}
+  .foot-col h5{font-size:12px;letter-spacing:0.1em;text-transform:uppercase;color:var(--brass);margin-bottom:16px;font-family:'IBM Plex Mono',monospace;}
+  .foot-col a{display:block;font-size:14px;color:rgba(236,231,222,0.7);margin-bottom:10px;transition:color .2s;}
+  .foot-col a:hover{color:var(--brass);}
+  .foot-bottom{
+    display:flex;justify-content:space-between;font-size:12px;color:rgba(236,231,222,0.4);
+    padding-top:24px;border-top:1px solid var(--line);flex-wrap:wrap;gap:10px;
+  }
+
+  @media(max-width:900px){
+    nav,.nav-cta{display:none;}
+    .burger{display:block;}
+    .menu-cols{grid-template-columns:1fr;gap:40px;}
+    .gallery-grid{grid-template-columns:repeat(2,1fr);grid-auto-rows:150px;}
+    .stylist-row{grid-template-columns:repeat(2,1fr);}
+    .testi-grid{grid-template-columns:1fr;}
+    .ticket{grid-template-columns:1fr;}
+    .ticket-stub::before{display:none;}
+    .foot-grid{grid-template-columns:1fr 1fr;}
+    .field-row{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">AURA <em>salon</em></div>
+  <nav>
+    <a href="#services">Menu</a>
+    <a href="#gallery">Gallery</a>
+    <a href="#stylists">Stylists</a>
+    <a href="#reviews">Reviews</a>
+    <a href="#book" class="nav-cta">Book a Chair</a>
+  </nav>
+  <button class="burger">☰</button>
+</header>
+
+<section class="hero">
+  <div class="wrap">
+    <div class="hero-eyebrow">Unisex hair &amp; grooming studio</div>
+    <h1>Two chairs.<br><span class="it">One standard.</span></h1>
+    <p class="hero-sub">No separate menus for him and her — just precise cuts, honest colour, and grooming done properly, for every kind of client who sits down in our chairs.</p>
+    <div class="hero-row">
+      <a href="#book" class="btn-primary">Reserve Your Slot</a>
+      <a href="#services" class="btn-ghost">View Full Menu →</a>
+    </div>
+  </div>
+</section>
+
+<div class="marquee-strip">
+  <div class="marquee-track">
+    <span>Precision Cuts</span><span>Global Colour</span><span>Beard Sculpting</span>
+    <span>Bridal Studio</span><span>Keratin &amp; Smoothening</span><span>Scalp Therapy</span>
+    <span>Precision Cuts</span><span>Global Colour</span><span>Beard Sculpting</span>
+    <span>Bridal Studio</span><span>Keratin &amp; Smoothening</span><span>Scalp Therapy</span>
+  </div>
+</div>
+
+<section class="section" id="services">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div>
+        <div class="section-eyebrow">The Menu</div>
+        <h2>Priced honestly. Explained upfront.</h2>
+      </div>
+      <p>Every service ends with a consultation, not a surprise bill. Prices shown are starting rates.</p>
+    </div>
+
+    <div class="menu-cols">
+      <div class="menu-group reveal">
+        <h3>Hair — Cut &amp; Style</h3>
+        <div class="menu-item">
+          <span class="m-name">Signature Haircut<span class="m-sub">Wash, cut, blow-dry finish</span></span>
+          <span class="m-leader"></span><span class="m-price">₹699</span>
+        </div>
+        <div class="menu-item">
+          <span class="m-name">Beard Sculpt &amp; Line-up<span class="m-sub">Hot towel + razor finish</span></span>
+          <span class="m-leader"></span><span class="m-price">₹399</span>
+        </div>
+        <div class="menu-item">
+          <span class="m-name">Kids Cut (Under 12)</span>
+          <span class="m-leader"></span><span class="m-price">₹399</span>
+        </div>
+        <div class="menu-item">
+          <span class="m-name">Head Massage Therapy<span class="m-sub">30 min, oil of your choice</span></span>
+          <span class="m-leader"></span><span class="m-price">₹499</span>
+        </div>
+      </div>
+
+      <div class="menu-group reveal">
+        <h3>Colour &amp; Texture</h3>
+        <div class="menu-item">
+          <span class="m-name">Global Colour<span class="m-sub">Ammonia-free, includes gloss</span></span>
+          <span class="m-leader"></span><span class="m-price">₹2,499</span>
+        </div>
+        <div class="menu-item">
+          <span class="m-name">Balayage / Highlights</span>
+          <span class="m-leader"></span><span class="m-price">₹4,999</span>
+        </div>
+        <div class="menu-item">
+          <span class="m-name">Keratin Smoothening</span>
+          <span class="m-leader"></span><span class="m-price">₹5,999</span>
+        </div>
+        <div class="menu-item">
+          <span class="m-name">Bridal Trial &amp; Styling<span class="m-sub">By appointment only</span></span>
+          <span class="m-leader"></span><span class="m-price">On request</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="gallery">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div>
+        <div class="section-eyebrow">Recent Work</div>
+        <h2>A look at the chair-side results.</h2>
+      </div>
+      <p>Swap these placeholders for real client photos before going live.</p>
+    </div>
+    <div class="gallery-grid reveal">
+      <div class="g-item"><span>Editorial Cut</span></div>
+      <div class="g-item"><span>Balayage</span></div>
+      <div class="g-item"><span>Beard Line-up</span></div>
+      <div class="g-item"><span>Bridal Updo</span></div>
+      <div class="g-item"><span>Studio Interior</span></div>
+      <div class="g-item"><span>Colour Gloss</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="stylists">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div>
+        <div class="section-eyebrow">Behind the Chairs</div>
+        <h2>Four stylists, one shared standard.</h2>
+      </div>
+      <p>Book with someone specific, or let us match you at check-in.</p>
+    </div>
+    <div class="stylist-row reveal">
+      <div class="stylist">
+        <div class="stylist-photo">Riya</div>
+        <h4>Riya Kapoor</h4>
+        <p>Colour Director</p>
+      </div>
+      <div class="stylist">
+        <div class="stylist-photo">Aman</div>
+        <h4>Aman Sethi</h4>
+        <p>Senior Barber</p>
+      </div>
+      <div class="stylist">
+        <div class="stylist-photo">Neha</div>
+        <h4>Neha Verma</h4>
+        <p>Bridal &amp; Styling</p>
+      </div>
+      <div class="stylist">
+        <div class="stylist-photo">Kabir</div>
+        <h4>Kabir Sinha</h4>
+        <p>Precision Cuts</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section testi-strip" id="reviews">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div>
+        <div class="section-eyebrow">Client Notes</div>
+        <h2>What people say after they leave the chair.</h2>
+      </div>
+    </div>
+    <div class="testi-grid reveal">
+      <div class="testi-card">
+        <blockquote>"First salon where my husband and I book back-to-back appointments and both walk out happy."</blockquote>
+        <cite>— PRIYA M., REGULAR SINCE 2023</cite>
+      </div>
+      <div class="testi-card">
+        <blockquote>"The beard line-up alone is worth the drive across town. Consistent, every single time."</blockquote>
+        <cite>— ROHIT S.</cite>
+      </div>
+      <div class="testi-card">
+        <blockquote>"They actually listen during consultation instead of just nodding. Rare these days."</blockquote>
+        <cite>— ANANYA D.</cite>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section booking" id="book">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div>
+        <div class="section-eyebrow">Reserve a Chair</div>
+        <h2>Booking takes less than a minute.</h2>
+      </div>
+    </div>
+
+    <div class="ticket reveal">
+      <div class="ticket-form">
+        <h3>Book Your Appointment</h3>
+        <p>We'll confirm by SMS within 30 minutes.</p>
+        <form onsubmit="return handleBooking(event)">
+          <div class="field-row">
+            <div class="field"><label>Full Name</label><input type="text" required placeholder="Your name"></div>
+            <div class="field"><label>Phone Number</label><input type="tel" required placeholder="+91"></div>
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label>Service</label>
+              <select required>
+                <option value="">Choose a service</option>
+                <option>Signature Haircut</option>
+                <option>Beard Sculpt &amp; Line-up</option>
+                <option>Global Colour</option>
+                <option>Balayage / Highlights</option>
+                <option>Keratin Smoothening</option>
+                <option>Bridal Trial</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>Preferred Stylist</label>
+              <select>
+                <option value="">No preference</option>
+                <option>Riya Kapoor</option>
+                <option>Aman Sethi</option>
+                <option>Neha Verma</option>
+                <option>Kabir Sinha</option>
+              </select>
+            </div>
+          </div>
+          <div class="field-row">
+            <div class="field"><label>Date</label><input type="date" required></div>
+            <div class="field"><label>Time</label><input type="time" required></div>
+          </div>
+          <button class="ticket-submit" type="submit">Confirm Booking</button>
+        </form>
+      </div>
+      <div class="ticket-stub">
+        <div class="stub-top">
+          <div class="mono">Admit One — Chair Reserved</div>
+          <h4>Sit back.<br>We'll take it from here.</h4>
+        </div>
+        <ul class="stub-list">
+          <li><span>Studio hours</span><span>10 AM – 8:30 PM</span></li>
+          <li><span>Closed</span><span>Tuesdays</span></li>
+          <li><span>Walk-ins</span><span>Subject to availability</span></li>
+          <li><span>Consultation</span><span>Always included</span></li>
+        </ul>
+        <div class="stub-bottom">Cancellations accepted up to 3 hours before your slot, no questions asked.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <div class="foot-logo">AURA <em>salon</em></div>
+        <p>Shop 4, Boring Road Crossing,<br>Patna, Bihar 800001</p>
+      </div>
+      <div class="foot-col">
+        <h5>Studio</h5>
+        <a href="#services">Menu</a>
+        <a href="#gallery">Gallery</a>
+        <a href="#stylists">Stylists</a>
+      </div>
+      <div class="foot-col">
+        <h5>Contact</h5>
+        <a href="tel:+910000000000">+91 00000 00000</a>
+        <a href="mailto:hello@aurasalon.demo">hello@aurasalon.demo</a>
+      </div>
+      <div class="foot-col">
+        <h5>Follow</h5>
+        <a href="#">Instagram</a>
+        <a href="#">Facebook</a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 Aura Unisex Salon — Demo template</span>
+      <span>Built for demonstration purposes</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // scroll reveal
+  const els = document.querySelectorAll('.reveal');
+  const obs = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); obs.unobserve(e.target); } });
+  },{threshold:0.15});
+  els.forEach(el=>obs.observe(el));
+
+  function handleBooking(e){
+    e.preventDefault();
+    const btn = e.target.querySelector('.ticket-submit');
+    const original = btn.textContent;
+    btn.textContent = 'Booked ✓';
+    btn.style.background = '#7a8c6f';
+    setTimeout(()=>{ btn.textContent = original; btn.style.background=''; e.target.reset(); }, 2200);
+  }
+</script>
+
+</body>
+</html>
